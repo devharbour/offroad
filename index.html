@@ -27,9 +27,6 @@
     section {
       padding: 80px 0;
     }
-    .table-responsive {
-      overflow-x: auto;
-    }
     .carousel-container {
       border: 2px solid #ccc;
       border-radius: 12px;
@@ -45,6 +42,37 @@
       object-fit: cover;
       border-radius: 8px;
     }
+    .destination-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      overflow: hidden;
+      background-color: white;
+      transition: box-shadow 0.3s ease;
+    }
+    .destination-card:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .destination-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .destination-card .card-body {
+      padding: 20px;
+    }
+    .destination-card h5 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+    .destination-card .group-price {
+      font-size: 1rem;
+      color: #555;
+    }
+    .destination-card .price {
+      font-weight: bold;
+      color: dodgerblue;
+    }
     @media (max-width: 768px) {
       .carousel-inner img {
         max-height: 300px;
@@ -57,7 +85,7 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="index.html">
       <img src="logo1.png" alt="Logo" class="logo">
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -82,7 +110,7 @@
     Each trip is carefully crafted to offer a one-of-a-kind experience, combining thrilling terrain, breathtaking landscapes, and expert guidance. 
     Whether you are an off-road enthusiast or a first-timer looking for an unforgettable journey, our trips prioritize safety, excitement, and connection with nature. 
     Join us to explore hidden gems and make memories that last a lifetime.
-    </p></p>
+    </p>
     <!-- SLIDER -->
     <div class="carousel-container">
       <div id="landroverCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -115,23 +143,6 @@
       <div class="col-md-6">
         <select id="filter-destination" class="form-select">
           <option value="">Filter by destination</option>
-          <option value="Drisht Castle">Drisht Castle</option>
-          <option value="Tarabosh">Tarabosh</option>
-          <option value="Prekal">Prekal</option>
-          <option value="Theth">Theth</option>
-          <option value="Boge">Boge</option>
-          <option value="Shegan's Eye">Shegan's Eye</option>
-          <option value="Puke">Puke</option>
-          <option value="Komani Lake">Komani Lake</option>
-          <option value="Shiroke">Shiroke - Lake Shkodra</option>
-          <option value="Zogaj">Zogaj - Lake Shkodra</option>
-          <option value="Dajc Bregice">Dajc Bregice</option>
-          <option value="Buna River Ada Bojana">Buna River Ada Bojana</option>
-          <option value="Rana e Hedhun Shengjin">Rana e Hedhun - Shengjin</option>
-          <option value="Razem">Razem</option>
-          <option value="Rec">Rec</option>
-          <option value="Lepushe">Lepushe</option>
-          <option value="Tarabosh Balcony View">Tarabosh Balcony View</option>
         </select>
       </div>
       <div class="col-md-6">
@@ -145,20 +156,9 @@
       </div>
     </div>
 
-    <!-- Table -->
-    <div class="table-responsive">
-      <table class="table table-striped" id="services-table">
-        <thead>
-          <tr>
-            <th>Destination</th>
-            <th>Group</th>
-            <th>Price per person (€)</th>
-          </tr>
-        </thead>
-        <tbody id="services-body">
-          <!-- Will be populated by JavaScript -->
-        </tbody>
-      </table>
+    <!-- Services List -->
+    <div id="services-list" class="row">
+      <!-- Services will be populated by JavaScript -->
     </div>
   </div>
 </section>
@@ -185,35 +185,43 @@
 <!-- JS SCRIPT -->
 <script>
   const services = [
-    { destination: "Boge", group: 3, price: 55 },
-    { destination: "Theth", group: 4, price: 70 },
-    { destination: "Razem", group: 3, price: 33 },
-    { destination: "Rec", group: 4, price: 30 },
-    { destination: "Lepushe", group: 4, price: 75 },
-    { destination: "Rana e Hedhun Shengjin", group: 4, price: 33 },
-    { destination: "Dajc Bregice", group: 4, price: 18 },
-    { destination: "Buna River Ada Bojana", group: 4, price: 30 },
-    { destination: "Prekal", group: 4, price: 15 },
-    { destination: "Shegan's Eye", group: 4, price: 30 },
-    { destination: "Tarabosh Balcony View", group: 4, price: 20 },
-    { destination: "Komani Lake", group: 3, price: 80 },
-    { destination: "Shiroke", group: 4, price: 20 },
-    { destination: "Zogaj", group: 4, price: 25 },
-    { destination: "Lepushe", group: 4, price: 75 },
-    { destination: "Drisht Castle", group: 4, price: 25 },
+    { destination: "Boge", group: 3, price: 55, image: "boge.jpg" },
+    { destination: "Theth", group: 4, price: 70, image: "theth.jpg" },
+    { destination: "Razem", group: 3, price: 33, image: "razem.jpg" },
+    { destination: "Rec", group: 4, price: 30, image: "rec.jpg" },
+    { destination: "Lepushe", group: 4, price: 75, image: "lepushe.jpg" },
+    { destination: "Rana e Hedhun Shengjin", group: 4, price: 33, image: "rana.jpg" },
+    { destination: "Dajc Bregice", group: 4, price: 18, image: "dajc.jpg" },
+    { destination: "Buna River Ada Bojana", group: 4, price: 30, image: "buna.jpg" },
+    { destination: "Prekal", group: 4, price: 15, image: "prekal.jpg" },
+    { destination: "Shegan's Eye", group: 4, price: 30, image: "shegan.jpg" },
+    { destination: "Tarabosh Balcony View", group: 4, price: 20, image: "tarabosh.jpg" },
+    { destination: "Komani Lake", group: 3, price: 80, image: "koman.jpg" },
+    { destination: "Shiroke", group: 4, price: 20, image: "shiroke.png" },
+    { destination: "Zogaj", group: 4, price: 25, image: "zogaj.jpg" },
+    { destination: "Drisht Castle", group: 4, price: 25, image: "drisht.jpg" }
   ];
 
-  const servicesBody = document.getElementById('services-body');
+  const servicesList = document.getElementById('services-list');
+  const destinationSelect = document.getElementById('filter-destination');
 
   function displayServices(data) {
-    servicesBody.innerHTML = '';
+    servicesList.innerHTML = '';
     data.forEach(s => {
-      servicesBody.innerHTML += `
-        <tr>
-          <td>${s.destination}</td>
-          <td>${s.group}</td>
-          <td>${s.price}</td>
-        </tr>`;
+      servicesList.innerHTML += `
+        <div class="col-md-4 col-sm-6">
+          <div class="destination-card">
+            <img src="${s.image}" alt="${s.destination}" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">${s.destination}</h5>
+              <div class="group-price">
+                <p>Group Size: ${s.group} people</p>
+                <p>Price per person: <span class="price">€${s.price}</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
     });
   }
 
@@ -229,14 +237,23 @@
     displayServices(filtered);
   }
 
+  // Populate the destination filter options dynamically
+  const destinations = Array.from(new Set(services.map(s => s.destination)));
+  destinations.forEach(dest => {
+    const option = document.createElement('option');
+    option.value = dest;
+    option.textContent = dest;
+    destinationSelect.appendChild(option);
+  });
+
+  // Event listeners for filtering
   document.getElementById('filter-destination').addEventListener('change', filterServices);
   document.getElementById('filter-group').addEventListener('change', filterServices);
 
-  // Initial display
+  // Initial display of all services
   displayServices(services);
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
